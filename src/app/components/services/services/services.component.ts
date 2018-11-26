@@ -34,7 +34,7 @@ export class ServicesComponent implements OnInit {
   async ngOnInit() {
     await this.listPulls();
 
-    for (let i = 0; i < environment.services.length; i++){
+    for (let i = 0; i < environment.services.length; i++) {
       let servicepath = environment.services[i];
       this.services[servicepath] = { pulls: 0 };
       this.servicepaths.push(servicepath);
@@ -83,17 +83,21 @@ export class ServicesComponent implements OnInit {
       this.services[servicepath]['schemastring'] = JSON.stringify(res, null, 2);
       this.services[servicepath]['methods'] = [];
       for (let method in res) {
-        this.services[servicepath]['methods'].push(method);
+        if (["@ping", "@info", "@schema"].indexOf(method) < 0) {
+          this.services[servicepath]['methods'].push(method);
+        }
       }
       this.subscriptions.push(this.services[servicepath]['methodSelected'].valueChanges.subscribe(v => {
         this.services[servicepath]['pushSchema'] = undefined;
         this.services[servicepath]['noSchema'] = false;
+        this.services[servicepath]['methodschemastring'] = "";
         if (res[v]['input']) {
           this.services[servicepath]['pushSchema'] = res[v]['input'];
+          this.services[servicepath]['methodschemastring'] = JSON.stringify(res[v]['input'], null, 2);
         } else {
           this.services[servicepath]['noSchema'] = true;
         }
-        this.initEditor(res[v]['input']);
+        this.initEditor(res[v]['input'], v);
       }));
     }).catch(err => console.log('Service @schema error:', err));
   }
@@ -138,8 +142,8 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  initEditor(schema) {
-    let e = document.getElementById('editor_holder');
+  initEditor(schema, method: string) {
+    let e = document.getElementById('editor_holder_' + method);
     if (this.editor) {
       this.editor.destroy();
     }
@@ -150,10 +154,10 @@ export class ServicesComponent implements OnInit {
       });
     }
   }
-  push(path){
+  push(path) {
     this.errors = null;
     this.errors = this.editor.validate();
-    if (this.errors.length == 0){
+    if (this.errors.length == 0) {
       var value = this.editor.getValue();
       this.pushService(path, value);
     }

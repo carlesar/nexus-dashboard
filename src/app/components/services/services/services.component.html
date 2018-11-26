@@ -20,63 +20,72 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-      <div label="Info">
-        <h2 translate>Info</h2>
-        <mat-list class="services-list">
-          <mat-list-item>
-            <button mat-icon-button>
-              <mat-icon mat-list-icon>assignment</mat-icon>
-            </button>
-            <p class="services-item" translate>Pull count</p>
-            <span class="flex-3 services-item">{{ services[path].pulls }}</span>
-          </mat-list-item>
+    <div label="Info">
+      <h2 translate>Info</h2>
+      <mat-list class="services-list">
+        <mat-list-item>
+          <button mat-icon-button>
+            <mat-icon mat-list-icon>assignment</mat-icon>
+          </button>
+          <p class="services-item" translate>Pull count</p>
+          <span class="flex-3 services-item">{{ services[path].pulls }}</span>
+        </mat-list-item>
 
-          <mat-list-item>
-            <button mat-icon-button (click)="pingService(path)">
-              <mat-icon mat-list-icon>timer</mat-icon>
-            </button>
-            <p class="services-item" translate>Ping service</p>
-            <span class="flex-3 services-item" *ngIf="services[path].ping">{{ services[path].ping.min }} / {{ services[path].ping.avg }} / {{ services[path].ping.max }} ms</span>
-            <span class="flex-3 services-item" *ngIf="!services[path].ping"> - / - / - </span>
-          </mat-list-item>
-        </mat-list>
-      </div>
+        <mat-list-item>
+          <button mat-icon-button (click)="pingService(path)">
+            <mat-icon mat-list-icon>timer</mat-icon>
+          </button>
+          <p class="services-item" translate>Ping service</p>
+          <span class="flex-3 services-item" *ngIf="services[path].ping">{{ services[path].ping.min }} / {{
+            services[path].ping.avg }} / {{ services[path].ping.max }} ms</span>
+          <span class="flex-3 services-item" *ngIf="!services[path].ping"> - / - / - </span>
+        </mat-list-item>
+      </mat-list>
+    </div>
 
-      <div label="Push">
-        <h2>Push</h2>
-        <mat-form-field *ngIf="services[path].methodSelected" style="margin-top: 15px;">
-          <mat-select placeholder="Method" [formControl]="services[path].methodSelected" required>
-            <mat-option>--</mat-option>
-            <mat-option *ngFor="let method of services[path].methods" [value]="method">
+    <div label="Push">
+      <h2>Push</h2>
+      <mat-accordion class="example-headers-align">
+        <mat-expansion-panel *ngFor="let method of services[path].methods" (click)="services[path].methodSelected.setValue(method)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
               {{ method }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="services[path].methodSelected.hasError('required')">{{ 'Please choose a method' | translate }}</mat-error>
-        </mat-form-field>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-        <h3 translate>Input parameters</h3>
-        <div id='editor_holder'></div>  
-        <div *ngIf="services[path].pushSchema">
-          <button mat-raised-button color="primary" (click)="push(path)">Push</button>
-        </div>
-        
-        <div *ngIf="services[path].noSchema" translate>NO_SCHEMA</div>
+          <div fxLayout="row" fxLayoutAlign="space-between start">
+            <div>
+              <h3 translate>Input parameters</h3>
+              <div [id]="'editor_holder_'+method"></div>
+              <div *ngIf="services[path].pushSchema">
+                <button mat-raised-button color="primary" (click)="push(path)">Push</button>
+              </div>
 
-        <div *ngIf="services[path].pushResult">
-          <h3 translate>Result</h3>
-          <pre>{{ services[path].pushResult }}</pre>
-        </div>
+              <div *ngIf="services[path].noSchema" translate>NO_SCHEMA</div>
 
-        <div *ngIf="services[path].pushError">
-          <h3 translate>Error</h3>
-          <pre>{{ services[path].pushError }}</pre>
-        </div>
-      </div>
+              <div *ngIf="services[path].pushResult">
+                <h3 translate>Result</h3>
+                <pre>{{ services[path].pushResult }}</pre>
+              </div>
 
-      <div label="Schema">
-        <h2 translate>Schema</h2>
-        <pre style="font-size: 11px; line-height: 13px;">{{ services[path].schemastring }}</pre>
-      </div>
+              <div *ngIf="services[path].pushError">
+                <h3 translate>Error</h3>
+                <pre>{{ services[path].pushError }}</pre>
+              </div>
+            </div>
+            <div style="min-width:40%; max-width: 50%">
+              <h3 translate>Schema</h3>
+              <pre>{{services[path].methodschemastring}}</pre>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+    <div label="Schema">
+      <h2 translate>Schema</h2>
+      <pre style="font-size: 11px; line-height: 13px;">{{ services[path].schemastring }}</pre>
+    </div>
 
   </mat-expansion-panel>
 </mat-accordion>
