@@ -34,11 +34,13 @@ export class ServicesComponent implements OnInit {
   async ngOnInit() {
     await this.listPulls();
 
-    Object.keys(this.services).map(async (servicepath) => {
+    for (let i = 0; i < environment.services.length; i++){
+      let servicepath = environment.services[i];
+      this.services[servicepath] = { pulls: 0 };
       this.servicepaths.push(servicepath);
-      await this.updateInfo(servicepath);
-      await this.updateSchema(servicepath);
-    })
+      this.updateInfo(servicepath);
+      this.updateSchema(servicepath);
+    }
 
     this.serviceshow = this.servicepaths;
 
@@ -61,9 +63,6 @@ export class ServicesComponent implements OnInit {
         if (task.Method === '') {
           let path = task.Path.slice(0, -1);
           if (this.services[path]) {
-            this.services[path]['pulls']++;
-          } else {
-            this.services[path] = { 'pulls': 0 };
             this.services[path]['pulls']++;
           }
         }
