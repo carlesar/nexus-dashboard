@@ -53,7 +53,7 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
 
-          <div fxLayout="row" fxLayoutAlign="space-between start">
+          <div fxLayout="row" fxLayoutAlign="space-between start" style="background-color: gainsboro">
             <div>
               <h3 translate>Input parameters</h3>
               <div [id]="'editor_holder_'+method"></div>
@@ -73,7 +73,7 @@
                 <pre>{{ services[path].pushError }}</pre>
               </div>
             </div>
-            <div style="min-width:40%; max-width: 50%">
+            <div style="min-width:40%; max-width: 50%;">
               <h3 translate>Schema</h3>
               <pre>{{services[path].methodschemastring}}</pre>
             </div>
