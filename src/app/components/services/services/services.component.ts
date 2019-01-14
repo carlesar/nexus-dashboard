@@ -97,7 +97,7 @@ export class ServicesComponent implements OnInit {
         } else {
           this.services[servicepath]['noSchema'] = true;
         }
-        this.initEditor(res[v]['input'], v);
+        this.initEditor(res[v]['input']['methods'], v);
       }));
     }).catch(err => console.log('Service @schema error:', err));
   }
