@@ -148,10 +148,10 @@ export class ServicesComponent implements OnInit {
     if (this.editor) {
       this.editor.destroy();
     }
+    
     if (schema) {
       this.editor = new JSONEditor(e, {
-        schema: schema,
-        iconlib: "material"
+        schema: schema
       });
     }
   }
