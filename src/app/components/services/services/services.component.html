@@ -65,17 +65,17 @@
 
               <div *ngIf="services[path].pushResult">
                 <h3 translate>Result</h3>
-                <pre>{{ services[path].pushResult }}</pre>
+                <pre class="pre_field">{{ services[path].pushResult }}</pre>
               </div>
 
               <div *ngIf="services[path].pushError">
                 <h3 translate>Error</h3>
-                <pre>{{ services[path].pushError }}</pre>
+                <pre class="pre_field">{{ services[path].pushError }}</pre>
               </div>
             </div>
             <div style="min-width:40%; max-width: 50%;">
               <h3 translate>Schema</h3>
-              <pre>{{services[path].methodschemastring}}</pre>
+              <pre class="pre_field">{{services[path].methodschemastring}}</pre>
             </div>
           </div>
         </mat-expansion-panel>

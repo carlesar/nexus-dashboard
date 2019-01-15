@@ -78,6 +78,7 @@ export class ServicesComponent implements OnInit {
 
   async updateSchema(servicepath: string) {
     await this.nexus.taskPush(servicepath + '.@schema', null, 5).then(res => {
+      res = res.methods;
       this.services[servicepath]['schema'] = res;
       this.services[servicepath]['methodSelected'] = new FormControl('', [Validators.required]);
       this.services[servicepath]['schemastring'] = JSON.stringify(res, null, 2);
@@ -97,7 +98,7 @@ export class ServicesComponent implements OnInit {
         } else {
           this.services[servicepath]['noSchema'] = true;
         }
-        this.initEditor(res[v]['input']['methods'], v);
+        this.initEditor(res[v].input, v);
       }));
     }).catch(err => console.log('Service @schema error:', err));
   }
