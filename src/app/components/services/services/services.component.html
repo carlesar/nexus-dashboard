@@ -1,7 +1,14 @@
-<div class="filter-table-header">
-  <mat-form-field floatPlaceholder="never">
-    <input matInput [placeholder]="'Filter services' | translate" [formControl]="prefix">
-  </mat-form-field>
+<div class="filter-table-header" style="display: flex">
+  <div style="flex: 6">
+    <mat-form-field floatPlaceholder="never">
+      <input matInput [placeholder]="'Filter services' | translate" [formControl]="prefix">
+    </mat-form-field>
+  </div>
+  <div style="flex: 1; text-align: center; padding: 5px">
+    <button mat-raised-button style="background-color: #B7B7B7" (click)="newService()">
+      New service
+    </button>
+  </div>
 </div>
 
 <mat-accordion class="example-headers-align">

@@ -4,6 +4,7 @@ import { NexusService } from '../../../services/nexus.service';
 import { formatLoad } from '../../../shared/functions';
 
 import { environment } from '../../../../environments/environment';
+import { NexusFacade } from '../../../services/nexus_facade';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loadingUsers: boolean = true;
   loadingTasks: boolean = true;
   loadingNodes: boolean = true;
-  totalServices: number = environment.services.length;
+  totalServices: number = 0;
   services: number = 0;
   users: number = 0;
   tasks: number = 0;
@@ -23,7 +24,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   interval: any;
 
   constructor(
-    private nexus: NexusService
+    private nexus: NexusService,
+    private nxf: NexusFacade
   ) { }
 
   ngOnInit() {
@@ -37,7 +39,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     clearInterval(this.interval);
   }
 
-  reloadInfo() {
+  async reloadInfo() {
     this.loadingServices = true;
     this.loadingUsers = true;
     this.loadingTasks = true;
@@ -55,7 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.nexus.taskTotal('').then(res => {
       this.tasks = res;
       this.loadingTasks = false;
-    }).catch(err =>{
+    }).catch(err => {
       console.log('Error getting task total:', err)
       this.loadingTasks = false;
       this.tasks = err.message || JSON.stringify(err);
@@ -79,7 +81,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     let servicesVisited = 0;
     this.services = 0;
-    for (let service of environment.services) {
+    let services = await this.nxf.getServices();
+    this.totalServices = services.length;
+
+    if (this.totalServices === 0) {
+      this.loadingServices = false;
+    }
+
+    for (let service of services) {
       this.nexus.taskPush(service + '.@info', null, 2).then(() => {
         servicesVisited++;
         this.services++;

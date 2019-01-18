@@ -1,3 +1,4 @@
+import { NexusFacade } from './services/nexus_facade';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -54,6 +55,7 @@ import { ServicesComponent } from './components/services/services/services.compo
 import { PushComponent } from './components/services/push/push.component';
 import { TasksComponent } from './components/services/tasks/tasks.component';
 import { PullComponent } from './components/services/pull/pull.component';
+import { NewServiceDialogComponent } from './components/services/new-service-dialog/new-service-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -76,11 +78,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     ServicesComponent,
     PushComponent,
     TasksComponent,
-    PullComponent
+    PullComponent,
+    NewServiceDialogComponent
   ],
   entryComponents: [
     UserCreateDialogComponent,
-    AreYouSureDialogComponent
+    AreYouSureDialogComponent,
+    NewServiceDialogComponent
   ],
   imports: [
     routing,
@@ -123,7 +127,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [
     LoggedInGuard,
     NexusService,
-    MacrosService
+    MacrosService,
+    NexusFacade
   ],
   bootstrap: [AppComponent]
 })

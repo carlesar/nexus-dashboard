@@ -1,3 +1,5 @@
+import { UserCreateDialogComponent } from './../../users/user-create-dialog/user-create-dialog.component';
+import { MatDialog } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -5,6 +7,8 @@ import { NexusService } from '../../../services/nexus.service';
 
 import { environment } from '../../../../environments/environment';
 import { Max, Min, isPrefix } from '../../../shared/functions';
+import { NexusFacade } from '../../../services/nexus_facade';
+import { NewServiceDialogComponent } from '../new-service-dialog/new-service-dialog.component';
 
 declare var JSONEditor;
 @Component({
@@ -22,7 +26,9 @@ export class ServicesComponent implements OnInit {
   errors: any;
 
   constructor(
-    private nexus: NexusService
+    private nexus: NexusService,
+    private nxf: NexusFacade,
+    public dialog: MatDialog
   ) { }
 
   ngOnDestroy() {
@@ -32,10 +38,16 @@ export class ServicesComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.listPulls();
+    this.servicepaths = [];
+    this.serviceshow= [];
+    this.prefix = new FormControl('');
+    this.subscriptions= [];
 
-    for (let i = 0; i < environment.services.length; i++) {
-      let servicepath = environment.services[i];
+    await this.listPulls();
+    
+    let services = await this.nxf.getServices();
+    for (let i = 0; i < services.length; i++) {
+      let servicepath = services[i];
       this.services[servicepath] = { pulls: 0 };
       this.servicepaths.push(servicepath);
       this.updateInfo(servicepath);
@@ -162,6 +174,16 @@ export class ServicesComponent implements OnInit {
       var value = this.editor.getValue();
       this.pushService(path, value);
     }
+  }
+
+  newService(){
+    let dialogRef = this.dialog.open(NewServiceDialogComponent, { width: '400px' });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result){
+        this.ngOnInit();
+      }
+    });
   }
 }
 

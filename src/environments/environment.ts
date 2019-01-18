@@ -5,10 +5,5 @@
 
 export const environment = {
   production: false,
-  host: 'ws://minikube.local:80',
-  services: [
-    'examples.fibonacci',
-    'examples.square',
-    'examples.false',
-  ]
+  host: 'ws://10.72.72.31:8980'
 };

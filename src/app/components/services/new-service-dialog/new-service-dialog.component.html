@@ -1,0 +1,20 @@
+<div *ngIf="!creating">
+    <h2 mat-header translate>Add new service</h2>
+  
+    <form [formGroup]="form">
+      <mat-form-field style="width: 100%;">
+        <input matInput [placeholder]="'Enter the new service\'s name' | translate" formControlName="name">
+      </mat-form-field>
+  
+      <div class="float-left">
+        <button mat-raised-button color="warn" (click)="cancel()" translate>{{ 'Cancel' | translate }}</button>
+      </div>
+      <div class="pull-right-inner">
+        <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="addService()" translate>{{ 'Add' | translate }}</button>
+      </div>
+    </form>
+  </div>
+  
+  <div *ngIf="creating" class="center-inner">
+    <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'"></mat-progress-spinner>
+  </div>
