@@ -54,6 +54,7 @@
       <h2>Push</h2>
       <mat-accordion class="example-headers-align">
         <mat-expansion-panel *ngFor="let method of services[path].methods">
+          
           <mat-expansion-panel-header (click)="services[path].methodSelected.setValue(method)">
             <mat-panel-title>
               {{ method }}

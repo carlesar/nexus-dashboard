@@ -104,13 +104,13 @@ export class ServicesComponent implements OnInit {
         this.services[servicepath]['pushSchema'] = undefined;
         this.services[servicepath]['noSchema'] = false;
         this.services[servicepath]['methodschemastring'] = "";
-        if (res[v]['input']) {
+        if (res[v] && res[v]['input']) {
           this.services[servicepath]['pushSchema'] = res[v]['input'];
           this.services[servicepath]['methodschemastring'] = JSON.stringify(res[v]['input'], null, 2);
         } else {
           this.services[servicepath]['noSchema'] = true;
         }
-        this.initEditor(res[v].input, v);
+        this.initEditor(res[v] ? res[v].input: null, v);
       }));
     }).catch(err => console.log('Service @schema error:', err));
   }
